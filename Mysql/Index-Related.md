@@ -24,6 +24,7 @@
         - [使用index extension](#%E4%BD%BF%E7%94%A8index-extension)
         - [invisible Indexes](#invisible-indexes)
         - [降序索引](#%E9%99%8D%E5%BA%8F%E7%B4%A2%E5%BC%95)
+        - [TIMESTAMP 索引](#timestamp-%E7%B4%A2%E5%BC%95)
 
 <!-- /TOC -->
 __本文多指在MySQL InnoDB的引擎下__
@@ -150,3 +151,8 @@ ALTER TABLE t1 ALTER INDEX i_idx VISIBLE;
 ```
 
 ### 降序索引
+在查询语句中有要求进行排序的时候，可以使用DESC字段对相应的索引进行降序排序。该索引只支持BTREE索引。
+
+### TIMESTAMP 索引
+* 如果没有索引，那么where语句中TIMESTAMP的比较是session的时间。
+* 如果有索引，那么where语句中TIMESTAMP的比较是UTC时间
