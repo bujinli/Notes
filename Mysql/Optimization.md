@@ -1,5 +1,15 @@
 # Optimization 优化
+<!-- TOC -->
 
+- [Optimization 优化](#optimization-%E4%BC%98%E5%8C%96)
+    - [优化数据大小 Data Size](#%E4%BC%98%E5%8C%96%E6%95%B0%E6%8D%AE%E5%A4%A7%E5%B0%8F-data-size)
+        - [Table Columns](#table-columns)
+        - [Row Format](#row-format)
+        - [Index](#index)
+        - [join](#join)
+        - [Normalization](#normalization)
+
+<!-- /TOC -->
 
 ## 优化数据大小 Data Size
 ### Table Columns
