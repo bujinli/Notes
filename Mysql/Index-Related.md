@@ -15,6 +15,15 @@
             - [Index Prefixes](#index-prefixes)
             - [FULLTEXT Indexes](#fulltext-indexes)
                 - [FULLTEXT search function](#fulltext-search-function)
+            - [Spatial Indexes](#spatial-indexes)
+        - [Multi-Column Indexes](#multi-column-indexes)
+            - [统计优化](#%E7%BB%9F%E8%AE%A1%E4%BC%98%E5%8C%96)
+        - [B树与hash索引 比较](#b%E6%A0%91%E4%B8%8Ehash%E7%B4%A2%E5%BC%95-%E6%AF%94%E8%BE%83)
+            - [B树索引](#b%E6%A0%91%E7%B4%A2%E5%BC%95)
+            - [Hash index](#hash-index)
+        - [使用index extension](#%E4%BD%BF%E7%94%A8index-extension)
+        - [invisible Indexes](#invisible-indexes)
+        - [降序索引](#%E9%99%8D%E5%BA%8F%E7%B4%A2%E5%BC%95)
 
 <!-- /TOC -->
 __本文多指在MySQL InnoDB的引擎下__
@@ -73,3 +82,71 @@ CREATE TABLE test (blob_col BLOB, INDEX(blob_col(10)));
 ##### FULLTEXT search function
 在创建FULLTEXT Index的时候，如果数据大，那么可以先加载到表中，然后创建index，这样速度会相应较快。
 [reference](https://dev.mysql.com/doc/refman/8.0/en/fulltext-search.html)
+#### Spatial Indexes
+
+### Multi-Column Indexes
+多列索引，一个索引有可能包含最多16列。   
+__Note__ 针对多列索引，我们还可以将多列索引的值进行hash(MD5)存储到一列中，然后针对这列建立索引。
+```
+SELECT * FROM tbl_name
+  WHERE hash_col=MD5(CONCAT(val1,val2))
+  AND col1=val1 AND col2=val2
+```
+leftmost prefix = 最左前缀原则
+
+#### 统计优化
+(reference)[https://dev.mysql.com/doc/refman/8.0/en/index-statistics.html]
+
+### B树与hash索引 比较
+#### B树索引
+* 只针对=,>,>=,<,<=,between.操作符
+* LIKE操作符，但是，比较多值不能以%开头
+* 最左前缀原则要求索引是以AND进行组合。
+```
+index used:
+... WHERE index_part1=1 AND index_part2=2 AND other_column=3
+
+    /* index = 1 OR index = 2 */
+... WHERE index=1 OR A=10 AND index=2
+
+    /* optimized like "index_part1='hello'" */
+... WHERE index_part1='hello' AND index_part3=5
+
+    /* Can use index on index1 but not on index2 or index3 */
+... WHERE index1=1 AND index2=2 OR index1=3 AND index3=3;
+
+index not used:
+    /* index_part1 is not used */
+... WHERE index_part2=1 AND index_part3=2
+
+    /*  Index is not used in both parts of the WHERE clause  */
+... WHERE index=1 OR A=10
+
+    /* No index spans all rows  */
+... WHERE index_part1=1 OR index_part2=10
+```
+有时候，Mysql会不使用索引，当他发现全表扫描更快的时候。
+#### Hash index
+* 只能针对操作符：=,<=>
+* 
+### 使用index extension
+Mysql能够为单列索引，创建一个包含PK的组合索引。比如
+```
+CREATE TABLE t1 (
+  i1 INT NOT NULL DEFAULT 0,
+  i2 INT NOT NULL DEFAULT 0,
+  d DATE DEFAULT NULL,
+  PRIMARY KEY (i1, i2),
+  INDEX k_d (d)
+) ENGINE = InnoDB;
+```
+这里，MYSQL把k_d作为一个d，i1，i2的索引。
+
+### invisible Indexes
+不可见索引，一般拿过来测试如果没有索引的话，查询的速度。
+```
+ALTER TABLE t1 ALTER INDEX i_idx INVISIBLE;
+ALTER TABLE t1 ALTER INDEX i_idx VISIBLE;
+```
+
+### 降序索引
