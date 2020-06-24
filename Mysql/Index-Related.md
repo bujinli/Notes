@@ -22,7 +22,6 @@
             - [B树索引](#b%E6%A0%91%E7%B4%A2%E5%BC%95)
             - [Hash index](#hash-index)
         - [使用index extension](#%E4%BD%BF%E7%94%A8index-extension)
-        - [invisible Indexes](#invisible-indexes)
         - [降序索引](#%E9%99%8D%E5%BA%8F%E7%B4%A2%E5%BC%95)
         - [TIMESTAMP 索引](#timestamp-%E7%B4%A2%E5%BC%95)
 

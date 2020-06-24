@@ -10,6 +10,7 @@
         - [Normalization](#normalization)
     - [Optimizing SQL Statement](#optimizing-sql-statement)
         - [Optimizing SELECT Statements](#optimizing-select-statements)
+        - [Index Merge Optimization](#index-merge-optimization)
 
 <!-- /TOC -->
 
@@ -37,5 +38,14 @@ tbd
 
 
 ## Optimizing SQL Statement
+* 慢查询select ... where 是否可以增加索引。
+* 减少全表扫描
+* 执行Analyze Table进行表的优化，换句话说，修复index。即索引的散列。Mysql优化器会在进行优化，产出更加有效的执行计划。因为优化器会使用一些统计信息，而 analyze table 会更新这些信息。
+* InoDB的只读事务。 Read-Only Transaction
+* 相应的调整Mysql的内存大小。
 
 ### Optimizing SELECT Statements
+https://dev.mysql.com/doc/refman/5.7/en/where-optimization.html
+
+### Index Merge Optimization
+https://www.jianshu.com/p/1c00dc8be14a
