@@ -19,6 +19,9 @@
         - [OutOfMemory (OOM) | StackOverflowError (SO) 来源](#outofmemory-oom--stackoverflowerror-so-%E6%9D%A5%E6%BA%90)
 
 <!-- /TOC -->
+* [Java Specs](https://docs.oracle.com/javase/specs/index.html)   
+* [Java SE 8](https://docs.oracle.com/javase/specs/jvms/se8/html/index.html)
+
 ## 程序计数器 (线程私有)
 当前线程所执行字节码的行号指示器。线程切换后，恢复线程到正确的执行位置。
 ## Java虚拟机栈 (线程私有)
@@ -58,7 +61,7 @@ __方法区的一部分__, 为了避免频繁的创建和销毁对象而影响�
 * 在运行期间，也可以把常量放入。string intern()方法。
 
 #### Samples：
-##### sample-1
+##### [sample-1](https://www.jianshu.com/p/10584345b10a)
 ```
 String s1 = new String("xyz"); //创建了几个对象？
 ```
@@ -66,7 +69,7 @@ String s1 = new String("xyz"); //创建了几个对象？
 * 类加载对一个类只会进行一次。"xyz"在类加载时就已经创建并驻留了（如果该类被加载之前已经有"xyz"字符串被驻留过则不需要重复创建用于驻留的"xyz"实例）。驻留的字符串是放在全局共享的字符串常量池中的。
 * 在这段代码后续被运行的时候，"xyz"字面量对应的String实例已经固定了，不会再被重复创建。所以这段代码将常量池中的对象复制一份放到heap中，并且把heap中的这个对象的引用交给s1 持有。
 
-##### sample-2
+##### [sample-2](https://www.jianshu.com/p/765bb0666944)
     // 1.编译期生成的各种字面量、符号引用      
     ```  
     String s1 = "abc";
